@@ -26,26 +26,17 @@ public class BST <T extends Comparable>{
         }
         add(this.root,value);
     }
-    private void add(Node root,T value){
-        if(root.value.compareTo(value)>0){
-            if(root.left!=null){
-                add(root.left,value);
-            }
-            else{
-                root.left = new Node(value);
-            }
+    private Node add(Node root,T value){
+        if (root == null) {
+            return new Node(value);
+        }
+        else if(root.value.compareTo(value)>0){
+            root.left = add(root.left,value);
         }
         else if(root.value.compareTo(value)<0){
-            if(root.right!=null){
-                add(root.right,value);
-            }
-            else{
-                root.right = new Node(value);
-            }
+            root.right = add(root.right,value);
         }
-        else{
-            return;
-        }
+        return root;
     }
     public T find(T value){
         return find(root,value);
@@ -144,8 +135,11 @@ public class BST <T extends Comparable>{
         BST tree = new BST(10);
         int[] seq = {10,9,15,13,14,17};
         List<Integer> list = new ArrayList<Integer>();
-        for(int i=0;i<seq.length;i++)list.add(seq[i]);
-        tree.deserialize(list);
+        for(int i=0;i<seq.length;i++) {
+            tree.add(seq[i]);
+        }
+        System.out.println(tree.serialize());
+        tree.deserialize(tree.serialize());
         System.out.println(tree.serialize());
         System.out.println(tree.inOrder());
     }
